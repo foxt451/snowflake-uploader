@@ -23,11 +23,14 @@ export type Input = {
     overwrite: boolean,
     flattenJson: boolean;
     tableName: string;
-    datasetId: string;
+    datasetId?: string;
     username: string;
     account: string;
     password: string;
     warehouse: string;
     database: string,
-    transformJsonKeyFunction?: string
+    transformJsonKeyFunction?: string,
+    resource?: {
+        defaultDatasetId?: string;
+    }
 };

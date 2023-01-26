@@ -14,4 +14,6 @@ The power of this scraper will come if you set up webhooks on Apify scrapers tha
 
 # Input
 
-The most important options for this scraper are connection options and datasetId. Other options allow you to manipualte your table schema and transform acquired json rows from the dataset.
+The most important options for this scraper are connection options and datasetId. Other options allow you to manipualte your table schema and transform acquired json rows from the dataset. If you decide to set up a webhook for some scraper, it will by default post the default dataset id, so in this case you may omit it.
+
+It might be convenient to set up a separate task with connection options. Then you'll be able to use a default webhook without modifying the payload at all.

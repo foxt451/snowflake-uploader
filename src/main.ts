@@ -35,6 +35,10 @@ const {
     overwrite,
     dataLossConfirmation,
 } = input;
+const selectedDatasetId = datasetId ?? input.resource?.defaultDatasetId;
+if (!selectedDatasetId) {
+    throw new Error('No datasetId provided');
+}
 
 const snowflakeConnection = snowflake.createConnection({
     username,
@@ -55,7 +59,10 @@ await new Promise<void>((res, rej) => {
     });
 });
 
-if (synchronizeSchema && dataLossConfirmation) {
+if (synchronizeSchema) {
+    if (!dataLossConfirmation) {
+        throw new Error('You must set "dataLossConfirmation" to true if you want to use "synchronizeSchema"!');
+    }
     await promisifySnoflakeExecute({
         snowflakeConnection,
         statement: `DROP TABLE IF EXISTS ${tableName};`,
@@ -78,9 +85,12 @@ const transformKeyFunc = transformJsonKeyFunction && new Function('key', transfo
 
 let transformedCount = 0;
 const TRANSFORMED_LOG_INTERVAL = 100;
+// using underlying http client isntead of apify client, because response streaming is used, which is not supported
+// out of the box by apify client;
+// using response streaming because in case of huge datasets, it might not be possible to load all data into memory
 await Actor.apifyClient.httpClient
     .call({
-        url: `https://api.apify.com/v2/datasets/${datasetId}/items?token=${Actor.apifyClient.token}&format=json&limit=100`,
+        url: `https://api.apify.com/v2/datasets/${selectedDatasetId}/items?token=${Actor.apifyClient.token}&format=json&limit=100`,
         method: 'GET',
         responseType: 'stream',
     })
@@ -157,7 +167,10 @@ await promisifySnoflakeExecute({
     },
 });
 
-if (overwrite && dataLossConfirmation) {
+if (overwrite) {
+    if (!dataLossConfirmation) {
+        throw new Error('You must set "dataLossConfirmation" to true if you want to use "synchronizeSchema"!');
+    }
     await promisifySnoflakeExecute({
         snowflakeConnection,
         statement: `DELETE FROM ${tableName};`,
