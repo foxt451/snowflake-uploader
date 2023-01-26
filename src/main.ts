@@ -85,7 +85,7 @@ const transformKeyFunc = transformJsonKeyFunction && new Function('key', transfo
 
 let transformedCount = 0;
 const TRANSFORMED_LOG_INTERVAL = 100;
-// using underlying http client isntead of apify client, because response streaming is used, which is not supported
+// using underlying http client instead of apify client, because response streaming is used, which is not supported
 // out of the box by apify client;
 // using response streaming because in case of huge datasets, it might not be possible to load all data into memory
 await Actor.apifyClient.httpClient
