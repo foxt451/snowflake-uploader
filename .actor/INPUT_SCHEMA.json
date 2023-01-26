@@ -66,7 +66,6 @@
             "description": "Supply your custom warehouse name if you want. The deault works fine as well.",
             "default": "COMPUTE_WH",
             "sectionCaption": "Connection",
-            "isSecret": true,
             "editor": "textfield"
         },
         "overwrite": {
@@ -91,5 +90,5 @@
             "editor": "checkbox"
         }
     },
-    "required": ["datasetId", "flattenJson", "username", "account", "password", "database", "overwrite", "dataLossConfirmation", "tableName"]
+    "required": ["datasetId", "flattenJson", "username", "account", "password", "warehouse", "database", "overwrite", "dataLossConfirmation", "tableName"]
 }
