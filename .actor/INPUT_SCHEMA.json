@@ -91,5 +91,5 @@
             "editor": "checkbox"
         }
     },
-    "required": ["datasetId", "flattenJson", "username", "account", "password", "warehouse", "database", "overwrite", "dataLossConfirmation", "tableName"]
+    "required": ["datasetId", "flattenJson", "username", "account", "password", "database", "overwrite", "dataLossConfirmation", "tableName"]
 }
