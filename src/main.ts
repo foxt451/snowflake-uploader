@@ -102,10 +102,10 @@ await Actor.apifyClient.httpClient
                 },
                 (data) => {
                     const value = data.value;
-                    if (!value || !flattenJson) {
+                    if (!value || !transformKeyFunc) {
                         return data;
                     }
-                    const newValue = transformKeyFunc ? Object.fromEntries(Object.entries(value).map(([k, v]) => [transformKeyFunc(k), v])) : value;
+                    const newValue = Object.fromEntries(Object.entries(value).map(([k, v]) => [transformKeyFunc(k), v]));
                     return {
                         ...data,
                         value: newValue,
