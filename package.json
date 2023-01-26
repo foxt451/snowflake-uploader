@@ -9,12 +9,17 @@
 	"dependencies": {
 		"apify": "^3.0.0",
 		"crawlee": "^3.0.0",
-		"snowflake-sdk": "^1.6.17"
+		"flat": "^5.0.2",
+		"snowflake-sdk": "^1.6.17",
+		"stream-chain": "^2.2.5",
+		"stream-json": "^1.7.5"
 	},
 	"devDependencies": {
 		"@apify/eslint-config-ts": "^0.2.3",
 		"@apify/tsconfig": "^0.1.0",
+		"@types/flat": "^5.0.2",
 		"@types/snowflake-sdk": "^1.6.12",
+		"@types/stream-json": "^1.7.3",
 		"@typescript-eslint/eslint-plugin": "^5.32.0",
 		"@typescript-eslint/parser": "^5.32.0",
 		"eslint": "^8.20.0",

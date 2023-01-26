@@ -1,24 +1,17 @@
-# CheerioCrawler project
+# What does Snowflake Uploader do?
 
-This template is a production ready boilerplate for developing with `CheerioCrawler`.
-Use this to bootstrap your projects using the most up-to-date code.
+Snowflake Uploader lets you upload any dataset to a DB provider [Snowflake](https://www.snowflake.com/en/). Use it for integration between Apify and Snowflake
 
-> We decided to split Apify SDK into two libraries, [Crawlee](https://crawlee.dev) and [Apify SDK v3](https://sdk.apify.com). Crawlee will retain all the crawling and scraping-related tools and will always strive to be the best web scraping library for its community. At the same time, Apify SDK will continue to exist, but keep only the Apify-specific features related to building actors on the Apify platform. Read the [upgrading guide](https://sdk.apify.com/docs/upgrading/upgrading-to-v3) to learn about the changes.
+# How to use Snowflake Uploader?
 
-If you're looking for examples or want to learn more visit:
+1. Go to [Snowflake Uploader](https://apify.com/svpetrenko/snowflake-uploader) on Apify
+2. Click **Try for free** button
+3. Enter scraper Input (see below): the dataset info, connection and transformation options.
+4. Click the Start button
+5. If the run is finished successfully, you should see data in your Snowflake table.
 
-- [Crawlee + Apify Platform guide](https://crawlee.dev/docs/guides/apify-platform)
-- [Cheerio Tutorial](https://crawlee.dev/docs/guides/cheerio-crawler-guide)
-- [Documentation](https://crawlee.dev/api/cheerio-crawler/class/CheerioCrawler)
-- [Examples](https://crawlee.dev/docs/examples/cheerio-crawler)
+The power of this scraper will come if you set up webhooks on Apify scrapers that will call this uploader after completion.
 
-## Documentation reference
+# Input
 
-- [Crawlee](https://crawlee.dev)
-- [Apify SDK v3](https://sdk.apify.com)
-- [Apify Actor documentation](https://docs.apify.com/actor)
-- [Apify CLI](https://docs.apify.com/cli)
-
-## Writing a README
-
-See our tutorial on [writing READMEs for your actors](https://help.apify.com/en/articles/2912548-how-to-write-great-readme-for-your-actors) if you need more inspiration.
+The most important options for this scraper are connection options and datasetId. Other options allow you to manipualte your table schema and transform acquired json rows from the dataset.

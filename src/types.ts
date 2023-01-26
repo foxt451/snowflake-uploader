@@ -21,10 +21,13 @@ export type Input = {
     synchronizeSchema?: { [key: string]: string };
     dataLossConfirmation: boolean;
     overwrite: boolean,
+    flattenJson: boolean;
+    tableName: string;
     datasetId: string;
     username: string;
     account: string;
     password: string;
     warehouse: string;
-    database: string
+    database: string,
+    transformJsonKeyFunction?: string
 };
