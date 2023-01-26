@@ -27,47 +27,6 @@
             "description": "Table name in the format DATABASE.SCHEMA.TABLENAME",
             "editor": "textfield"
         },
-        "username": {
-            "title": "Connection username",
-            "type": "string",
-            "description": "Your acount's username",
-            "sectionCaption": "Connection",
-            "sectionDescription": "Connection settings",
-            "isSecret": true,
-            "editor": "textfield"
-        },
-        "account": {
-            "title": "Account name",
-            "type": "string",
-            "description": "Account name. You can get it from the url, it's usually a set of letters and is not the same as your username.",
-            "sectionCaption": "Connection",
-            "isSecret": true,
-            "editor": "textfield"
-        },
-        "password": {
-            "title": "Password",
-            "type": "string",
-            "description": "Your account's password",
-            "sectionCaption": "Connection",
-            "isSecret": true,
-            "editor": "textfield"
-        },
-        "database": {
-            "title": "Database name",
-            "type": "string",
-            "description": "Your database's name.",
-            "sectionCaption": "Connection",
-            "isSecret": true,
-            "editor": "textfield"
-        },
-        "warehouse": {
-            "title": "Warehouse",
-            "type": "string",
-            "description": "Supply your custom warehouse name if you want. The deault works fine as well.",
-            "default": "COMPUTE_WH",
-            "sectionCaption": "Connection",
-            "editor": "textfield"
-        },
         "overwrite": {
             "title": "Overwrite table",
             "type": "boolean",
@@ -88,6 +47,43 @@
             "default": false,
             "description": "If you choose to synchronize your schema or overwrite previous data, check this checkbox to confirm that you agree to lose your previous data",
             "editor": "checkbox"
+        },
+        "username": {
+            "title": "Connection username",
+            "type": "string",
+            "description": "Your acount's username",
+            "sectionCaption": "Connection",
+            "sectionDescription": "Connection settings",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "account": {
+            "title": "Account name",
+            "type": "string",
+            "description": "Account name. You can get it from the url, it's usually a set of letters and is not the same as your username.",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "password": {
+            "title": "Password",
+            "type": "string",
+            "description": "Your account's password",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "database": {
+            "title": "Database name",
+            "type": "string",
+            "description": "Your database's name.",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "warehouse": {
+            "title": "Warehouse",
+            "type": "string",
+            "description": "Supply your custom warehouse name if you want. The deault works fine as well.",
+            "default": "COMPUTE_WH",
+            "editor": "textfield"
         }
     },
     "required": ["datasetId", "flattenJson", "username", "account", "password", "warehouse", "database", "overwrite", "dataLossConfirmation", "tableName"]
