@@ -55,7 +55,7 @@
         "flattenJson": {
             "title": "Flatten JSON",
             "type": "boolean",
-            "sectionCaption": null,
+            "sectionCaption": "",
             "description": "If you select this option, instead of {a: {b: 1, c: [1, 2]}} you'll get {a.b: 1, a.c.0: 1, a.c.1: 2}",
             "editor": "checkbox",
             "default": false
