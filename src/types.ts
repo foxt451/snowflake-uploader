@@ -18,9 +18,9 @@ export enum LABEL {
 }
 
 export type Input = {
-    synchronizeSchema?: { [key: string]: string };
+    synchronizeSchema?: [{ key: string; value: string }];
     dataLossConfirmation: boolean;
-    overwrite: boolean,
+    overwrite: boolean;
     flattenJson: boolean;
     tableName: string;
     datasetId?: string;
@@ -29,11 +29,11 @@ export type Input = {
     password: string;
     warehouse: string;
     stage?: string;
-    database: string,
-    transformJsonKeyFunction?: string,
-    transformJsonDataFunction?: string,
-    limit?: number,
+    database: string;
+    transformJsonKeyFunction?: string;
+    transformJsonDataFunction?: string;
+    limit?: number;
     resource?: {
         defaultDatasetId?: string;
-    }
+    };
 };

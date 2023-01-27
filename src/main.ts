@@ -73,11 +73,10 @@ if (synchronizeSchema) {
     });
     await promisifySnoflakeExecute({
         snowflakeConnection,
-        statement: `CREATE TABLE ${tableName} (${Object.entries(synchronizeSchema)
-            .map(([key, value]) => `"${key}" ${value}`)
-            .join(', ')});`,
+        statement: `CREATE TABLE ${tableName} (${synchronizeSchema.map(({ key, value }) => `"${key}" ${value}`).join(', ')});`,
         verb: 'CREATE',
     });
+    log.info('Synchronized schema');
 }
 
 const outputLocation = '/tmp/dataset.json';
@@ -94,7 +93,9 @@ const TRANSFORMED_LOG_INTERVAL = 100;
 // using response streaming because in case of huge datasets, it might not be possible to load all data into memory
 await Actor.apifyClient.httpClient
     .call({
-        url: `https://api.apify.com/v2/datasets/${selectedDatasetId}/items?token=${Actor.apifyClient.token}&format=json${limit ? `&limit=${limit}` : ''}`,
+        url: `https://api.apify.com/v2/datasets/${selectedDatasetId}/items?token=${Actor.apifyClient.token}&format=json${
+            limit ? `&limit=${limit}` : ''
+        }`,
         method: 'GET',
         responseType: 'stream',
     })
@@ -176,7 +177,7 @@ await promisifySnoflakeExecute({
     verb: 'PUT',
 });
 
-log.info("Uploaded data file to stage")
+log.info('Uploaded data file to stage');
 
 if (overwrite) {
     if (!dataLossConfirmation) {
@@ -187,7 +188,7 @@ if (overwrite) {
         statement: `DELETE FROM ${tableName};`,
         verb: 'DELETE',
     });
-    log.info("Synchronized schema")
+    log.info('Deleted previous data');
 }
 
 await promisifySnoflakeExecute({
