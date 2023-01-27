@@ -33,6 +33,7 @@ const {
     warehouse,
     database,
     overwrite,
+    stage,
     dataLossConfirmation,
 } = input;
 const selectedDatasetId = datasetId ?? input.resource?.defaultDatasetId;
@@ -152,7 +153,7 @@ await Actor.apifyClient.httpClient
 log.info('Downloaded and transformed the dataset');
 
 const splitTableName = tableName.split('.');
-const tableStageName = `@${splitTableName[0]}.${splitTableName[1]}.%${splitTableName[2]}`;
+const tableStageName = stage || `@${splitTableName[0]}.${splitTableName[1]}.%${splitTableName[2]}`;
 let counter = 0;
 const LOG_COPY_INTERVAL = 100;
 await promisifySnoflakeExecute({
@@ -180,7 +181,7 @@ if (overwrite) {
 
 await promisifySnoflakeExecute({
     snowflakeConnection,
-    statement: `COPY INTO ${tableName} FILE_FORMAT = (TYPE = 'JSON' STRIP_OUTER_ARRAY = TRUE) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;`,
+    statement: `COPY INTO ${tableName} FROM ${tableStageName} FILE_FORMAT = (TYPE = 'JSON' STRIP_OUTER_ARRAY = TRUE) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;`,
     verb: 'COPY',
 });
 

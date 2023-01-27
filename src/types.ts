@@ -28,6 +28,7 @@ export type Input = {
     account: string;
     password: string;
     warehouse: string;
+    stage?: string;
     database: string,
     transformJsonKeyFunction?: string,
     resource?: {

@@ -52,6 +52,12 @@
             "default": "COMPUTE_WH",
             "editor": "textfield"
         },
+        "stage": {
+            "title": "Stage",
+            "type": "string",
+            "description": "Supply name of the stage where the file with data will be uploaded (with PUT). If you don't specify this, your table's default stage will be used.",
+            "editor": "textfield"
+        },
         "flattenJson": {
             "title": "Flatten JSON",
             "type": "boolean",
