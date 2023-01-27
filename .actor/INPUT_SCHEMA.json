@@ -75,7 +75,7 @@
         "transformJsonDataFunction": {
             "title": "Transform JSON data function",
             "type": "string",
-            "description": "Runs after transforming keys. Enter body of a function that will transform dataset objecs. You have access to 'value' argument that is a json object from dataset and must return a(n) (un)modified value. Example: `value.name += '/'; return value`",
+            "description": "Runs after transforming keys. Enter the body of a function that will transform dataset objecs. You have access to 'value' argument that is a json object from dataset and must return a(n) (un)modified value. Example: `value.name += '/'; return value`",
             "editor": "javascript"
         },
         "limit": {
