@@ -69,8 +69,20 @@
         "transformJsonKeyFunction": {
             "title": "Transform JSON key function",
             "type": "string",
-            "description": "Enter body of a function that will transform JSON keys of dataset objecs. You have access to 'key' argument and must return a string. Example: 'return key.toLowerCase()'",
+            "description": "Runs after flattening JSON. Enter body of a function that will transform JSON keys of dataset objecs. You have access to 'key' argument and must return a string. Example: 'return key.toLowerCase()'",
             "editor": "javascript"
+        },
+        "transformJsonDataFunction": {
+            "title": "Transform JSON data function",
+            "type": "string",
+            "description": "Runs after transforming keys. Enter body of a function that will transform dataset objecs. You have access to 'value' argument that is a json object from dataset and must return a(n) (un)modified value. Example: `value.name += '/'; return value`",
+            "editor": "javascript"
+        },
+        "limit": {
+            "title": "Limit rows",
+            "type": "integer",
+            "description": "Limit the number of rows to be uploaded (e.g. for testing purposes on large datasets, because you have to wait for all your dataset to get transformed before pushing anything to the db). If you don't specify this, all rows will be uploaded.",
+            "editor": "number"
         },
         "overwrite": {
             "title": "Overwrite table",

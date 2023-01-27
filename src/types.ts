@@ -31,6 +31,8 @@ export type Input = {
     stage?: string;
     database: string,
     transformJsonKeyFunction?: string,
+    transformJsonDataFunction?: string,
+    limit?: number,
     resource?: {
         defaultDatasetId?: string;
     }

@@ -31,8 +31,10 @@ const {
     account,
     password,
     warehouse,
+    limit,
     database,
     overwrite,
+    transformJsonDataFunction,
     stage,
     dataLossConfirmation,
 } = input;
@@ -83,6 +85,7 @@ const outputLocation = '/tmp/dataset.json';
 const writer = createWriteStream(outputLocation);
 
 const transformKeyFunc = transformJsonKeyFunction && new Function('key', transformJsonKeyFunction);
+const transformDataFunc = transformJsonDataFunction && new Function('value', transformJsonDataFunction);
 
 let transformedCount = 0;
 const TRANSFORMED_LOG_INTERVAL = 100;
@@ -91,7 +94,7 @@ const TRANSFORMED_LOG_INTERVAL = 100;
 // using response streaming because in case of huge datasets, it might not be possible to load all data into memory
 await Actor.apifyClient.httpClient
     .call({
-        url: `https://api.apify.com/v2/datasets/${selectedDatasetId}/items?token=${Actor.apifyClient.token}&format=json&limit=100`,
+        url: `https://api.apify.com/v2/datasets/${selectedDatasetId}/items?token=${Actor.apifyClient.token}&format=json${limit ? `&limit=${limit}` : ''}`,
         method: 'GET',
         responseType: 'stream',
     })
@@ -117,6 +120,17 @@ await Actor.apifyClient.httpClient
                         return data;
                     }
                     const newValue = Object.fromEntries(Object.entries(value).map(([k, v]) => [transformKeyFunc(k), v]));
+                    return {
+                        ...data,
+                        value: newValue,
+                    };
+                },
+                (data) => {
+                    const value = data.value;
+                    if (!value || !transformDataFunc) {
+                        return data;
+                    }
+                    const newValue = transformDataFunc(value);
                     return {
                         ...data,
                         value: newValue,
@@ -160,13 +174,9 @@ await promisifySnoflakeExecute({
     snowflakeConnection,
     statement: `PUT file://${outputLocation} ${tableStageName} overwrite=TRUE;`,
     verb: 'PUT',
-    rowCallback: () => {
-        counter++;
-        if (counter % LOG_COPY_INTERVAL === 0) {
-            log.info(`Copied into database ${counter} rows`);
-        }
-    },
 });
+
+log.info("Uploaded data file to stage")
 
 if (overwrite) {
     if (!dataLossConfirmation) {
@@ -177,6 +187,7 @@ if (overwrite) {
         statement: `DELETE FROM ${tableName};`,
         verb: 'DELETE',
     });
+    log.info("Synchronized schema")
 }
 
 await promisifySnoflakeExecute({
