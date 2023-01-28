@@ -1,0 +1,7 @@
+{
+	"actorSpecification": 1,
+	"name": "snowflake-uploader",
+	"version": "0.1",
+	"buildTag": "latest",
+	"environmentVariables": {}
+}

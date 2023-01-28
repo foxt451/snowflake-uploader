@@ -1,0 +1,109 @@
+{
+    "title": "Snowflake uploader input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "datasetId": {
+            "title": "Dataset ID",
+            "type": "string",
+            "description": "Dataset of the ID to download the data from. If you set up a webhook, it will be posted in the default payload",
+            "editor": "textfield"
+        },
+        "tableName": {
+            "title": "Fully-qualified table name",
+            "type": "string",
+            "description": "Table name in the format DATABASE.SCHEMA.TABLENAME",
+            "editor": "textfield"
+        },
+        "username": {
+            "title": "Connection username",
+            "type": "string",
+            "description": "Your acount's username",
+            "sectionCaption": "Connection",
+            "sectionDescription": "Connection settings",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "account": {
+            "title": "Account name",
+            "type": "string",
+            "description": "Account name. You can get it from the url, it's usually a set of letters and is not the same as your username.",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "password": {
+            "title": "Password",
+            "type": "string",
+            "description": "Your account's password",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "database": {
+            "title": "Database name",
+            "type": "string",
+            "description": "Your database's name.",
+            "isSecret": true,
+            "editor": "textfield"
+        },
+        "warehouse": {
+            "title": "Warehouse",
+            "type": "string",
+            "description": "Supply your custom warehouse name if you want. The deault works fine as well.",
+            "default": "COMPUTE_WH",
+            "editor": "textfield"
+        },
+        "stage": {
+            "title": "Stage",
+            "type": "string",
+            "description": "Supply name of the stage where the file with data will be uploaded (with PUT). If you don't specify this, your table's default stage will be used.",
+            "editor": "textfield"
+        },
+        "flattenJson": {
+            "title": "Flatten JSON",
+            "type": "boolean",
+            "sectionCaption": "Dataset/table transformation settings",
+            "description": "If you select this option, instead of {a: {b: 1, c: [1, 2]}} you'll get {a.b: 1, a.c.0: 1, a.c.1: 2}",
+            "editor": "checkbox",
+            "default": false
+        },
+        "transformJsonKeyFunction": {
+            "title": "Transform JSON key function",
+            "type": "string",
+            "description": "Runs after flattening JSON. Enter body of a function that will transform JSON keys of dataset objecs. You have access to 'key' argument and must return a string. Example: 'return key.toLowerCase()'",
+            "editor": "javascript"
+        },
+        "transformJsonDataFunction": {
+            "title": "Transform JSON data function",
+            "type": "string",
+            "description": "Runs after transforming keys. Enter the body of a function that will transform dataset objecs. You have access to 'value' argument that is a json object from dataset and must return a(n) (un)modified value. Example: `value.name += '/'; return value`",
+            "editor": "javascript"
+        },
+        "limit": {
+            "title": "Limit rows",
+            "type": "integer",
+            "description": "Limit the number of rows to be uploaded (e.g. for testing purposes on large datasets, because you have to wait for all your dataset to get transformed before pushing anything to the db). If you don't specify this, all rows will be uploaded.",
+            "editor": "number"
+        },
+        "overwrite": {
+            "title": "Overwrite table",
+            "type": "boolean",
+            "description": "Whether to drop the table's data before pushing dataset data into it",
+            "editor": "checkbox",
+            "default": false
+        },
+        "synchronizeSchema": {
+            "title": "Database schema columns (SETTING THIS OPTION WILL DROP YOUR TABLE)",
+            "type": "array",
+            "description": "In case your destination table has a schema incompatible with the dataset, you can provide a list of column names and their types, then the table will be synchronized according to your definitions by dropping and recreating the table. Key is the column name, value is the column type (as in SQL query, like VARCHAR). This is optional if your table already has the desired schema.",
+            "editor": "keyValue"
+        },
+        "dataLossConfirmation": {
+            "title": "Confirm data loss",
+            "type": "boolean",
+            "default": false,
+            "description": "If you choose to synchronize your schema or overwrite previous data, check this checkbox to confirm that you agree to lose your previous data",
+            "editor": "checkbox"
+        }
+    },
+    "required": ["username", "account", "password", "warehouse", "database", "tableName"]
+}
