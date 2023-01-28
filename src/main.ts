@@ -48,6 +48,7 @@ const snowflakeConnection = snowflake.createConnection({
     account,
     password,
     database,
+
     warehouse,
 });
 
@@ -88,6 +89,7 @@ const transformDataFunc = transformJsonDataFunction && new Function('value', tra
 
 let transformedCount = 0;
 const TRANSFORMED_LOG_INTERVAL = 100;
+const TRANSFORMED_VIEW_INTERVAL = 2000;
 // using underlying http client instead of apify client, because response streaming is used, which is not supported
 // out of the box by apify client;
 // using response streaming because in case of huge datasets, it might not be possible to load all data into memory
@@ -138,6 +140,9 @@ await Actor.apifyClient.httpClient
                     };
                 },
                 (data) => {
+                    if (transformedCount % TRANSFORMED_VIEW_INTERVAL === 0) {
+                        log.info(`Transformed object looks like: ${JSON.stringify(data.value, null, 2)}`);
+                    }
                     transformedCount++;
                     if (transformedCount % TRANSFORMED_LOG_INTERVAL === 0) {
                         log.info(`Transformed ${transformedCount} rows`);
