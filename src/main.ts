@@ -48,7 +48,6 @@ const snowflakeConnection = snowflake.createConnection({
     account,
     password,
     database,
-
     warehouse,
 });
 
@@ -198,7 +197,7 @@ if (overwrite) {
 
 await promisifySnoflakeExecute({
     snowflakeConnection,
-    statement: `COPY INTO ${tableName} FROM ${tableStageName} FILE_FORMAT = (TYPE = 'JSON' STRIP_OUTER_ARRAY = TRUE) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;`,
+    statement: `COPY INTO ${tableName} FROM ${tableStageName} FILE_FORMAT = (TYPE = 'JSON' STRIP_OUTER_ARRAY = TRUE) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PURGE = TRUE;`,
     verb: 'COPY',
 });
 
