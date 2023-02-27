@@ -103,6 +103,14 @@
             "default": false,
             "description": "If you choose to synchronize your schema or overwrite previous data, check this checkbox to confirm that you agree to lose your previous data",
             "editor": "checkbox"
+        },
+        "fileUploadRetries": {
+            "title": "File upload retries",
+            "type": "integer",
+            "sectionCaption": "Execution settings",
+            "description": "How many times to retry uploading the file to Snowflake. This setting is useful because this last operation sometimes fails for large datasets due to snoflake's driver",
+            "default": 5,
+            "editor": "number"
         }
     },
     "required": ["username", "account", "password", "warehouse", "database", "tableName"]

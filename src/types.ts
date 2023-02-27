@@ -18,6 +18,7 @@ export enum LABEL {
 }
 
 export type Input = {
+    fileUploadRetries?: number;
     synchronizeSchema?: [{ key: string; value: string }];
     dataLossConfirmation: boolean;
     overwrite: boolean;

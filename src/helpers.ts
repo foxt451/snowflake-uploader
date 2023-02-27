@@ -1,3 +1,4 @@
+import { log } from 'apify';
 import snowflake from 'snowflake-sdk';
 
 type PromisifyParams = {
@@ -14,7 +15,7 @@ export const promisifySnoflakeExecute = ({ statement, verb, closedCallback, rowC
             sqlText: statement,
             complete: function (err, statement) {
                 if (err) {
-                    console.log(err)
+                    console.log(err);
                     rej(new Error(`Failed to execute ${verb} statement due to the following error: ${err.message}`));
                 }
                 var stream = statement.streamRows();
@@ -28,4 +29,19 @@ export const promisifySnoflakeExecute = ({ statement, verb, closedCallback, rowC
             },
         })
     );
+};
+
+export const sequentialRetry = async <TResult>(fn: () => Promise<TResult>, retries: number = 5, contextMsg?: string): Promise<TResult> => {
+    try {
+        return await fn();
+    } catch (e: any) {
+        if (retries > 0) {
+            log.warning(`Retrying after error: ${e.message}. Retries left: ${retries}`);
+            if (contextMsg) {
+                log.warning(`${contextMsg}`);
+            }
+            return await sequentialRetry(fn, retries - 1);
+        }
+        throw e;
+    }
 };

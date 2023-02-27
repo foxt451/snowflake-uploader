@@ -1,10 +1,10 @@
 import { Actor, log } from 'apify';
-import { BasicCrawler, BasicCrawlingContext } from 'crawlee';
+import { BasicCrawler, BasicCrawlingContext, sleep } from 'crawlee';
 import snowflake from 'snowflake-sdk';
 import fs, { createWriteStream } from 'fs';
 import { CrawlerContext, Input } from './types.js';
 import streamJson from 'stream-json';
-import { promisifySnoflakeExecute } from './helpers.js';
+import { promisifySnoflakeExecute, sequentialRetry } from './helpers.js';
 import stringerModule from 'stream-json/Stringer.js';
 import disassemblerModule from 'stream-json/Disassembler.js';
 import streamChain from 'stream-chain';
@@ -28,6 +28,7 @@ const {
     flattenJson,
     tableName,
     username,
+    fileUploadRetries = 5,
     account,
     password,
     warehouse,
@@ -183,6 +184,11 @@ await promisifySnoflakeExecute({
 
 log.info('Uploaded data file to stage');
 
+// sleep some time snowflake recognizes the file
+const POST_UPLOAD_SLEEP_MS = 5000;
+log.info(`Waiting ${POST_UPLOAD_SLEEP_MS} ms after uploading file to stage...`);
+await sleep(POST_UPLOAD_SLEEP_MS);
+
 if (overwrite) {
     if (!dataLossConfirmation) {
         throw new Error('You must set "dataLossConfirmation" to true if you want to use "synchronizeSchema"!');
@@ -195,10 +201,10 @@ if (overwrite) {
     log.info('Deleted previous data');
 }
 
-await promisifySnoflakeExecute({
+await sequentialRetry(() => promisifySnoflakeExecute({
     snowflakeConnection,
     statement: `COPY INTO ${tableName} FROM ${tableStageName} FILE_FORMAT = (TYPE = 'JSON' STRIP_OUTER_ARRAY = TRUE) MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE PURGE = TRUE;`,
     verb: 'COPY',
-});
+}), fileUploadRetries, 'Note: there is an active issue at snowflake`s driver that sometimes causes errors during large file uploads. It is often resolved after a couple of retries.');
 
 await Actor.exit();
