@@ -15,10 +15,12 @@ export const promisifySnoflakeExecute = ({ statement, verb, closedCallback, rowC
             sqlText: statement,
             complete: function (err, statement) {
                 if (err) {
-                    console.log(err);
                     rej(new Error(`Failed to execute ${verb} statement due to the following error: ${err.message}`));
                 }
-                var stream = statement.streamRows();
+                const stream = statement.streamRows();
+                stream.on('error', function (err) {
+                    rej(new Error(`Failed to execute ${verb} statement due to the following error: ${err.message}`));
+                })
                 stream.on('data', function (row) {
                     rowCallback?.(row);
                 });
