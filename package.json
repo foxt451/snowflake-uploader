@@ -10,7 +10,7 @@
 		"apify": "^3.0.0",
 		"crawlee": "^3.0.0",
 		"flat": "^5.0.2",
-		"snowflake-sdk": "^1.6.17",
+		"snowflake-sdk": "^1.6.19",
 		"stream-chain": "^2.2.5",
 		"stream-json": "^1.7.5"
 	},
